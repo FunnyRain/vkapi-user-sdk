@@ -2,14 +2,10 @@
 
 class VkApiRequest {
 
-    public static $token;
-    public static $v;
+    private $user;
 
-    public function __construct(string $token, $v = 5.126) {
-        if (strlen($token) < 1) exit('Where is my token?');
-
-        self::$token = $token;
-        self::$v = $v;
+    public function __construct(User $user) {
+    	$this->user = $user;
     }
 
     public function call(string $url) {
@@ -19,19 +15,19 @@ class VkApiRequest {
         );
 
         if (isset($sendRequest['error'])) {
-            echo ('\n*******\n' . var_dump($sendRequest['error']) . '\n*******');
+        	echo ("*******\n#{$sendRequest['error']['error_code']}, {$sendRequest['error']['error_msg']}\n*******\n");
         } else return (isset($sendRequest['response'])) ? $sendRequest['response'] : $sendRequest;
     }
 
     public function api(string $method, array $params = []) {
-        return $this->call(self::http_build_query($method, [
-            'v' => self::$v,
-            'access_token' => self::$token
-        ] + $params));
+        return $this->call(self::http_build_query($method, http_build_query([
+            'v' => $this->user->v,
+            'access_token' => $this->user->token
+        ] + $params)));
     }
 
-    private static function http_build_query($method, $params = '') {
-        return 'https://api.vk.com/method/{$method}?{$params}';
+    private static function http_build_query(string $method, string $params) {
+        return "https://api.vk.com/method/{$method}?{$params}";
     }
 
     private static function curl_post(string $url) {
