@@ -10,7 +10,7 @@ class Wall {
 		$this->cache = new Cache('temp_wallIDS.json');
 	}
 	
-	public function listen($owner_id, $call) {
+	public function listen($owner_id, $call, int $sleep) {
 		while ($data = $this->user->VkApiRequest()->api('wall.get', [
 			'owner_id' => $owner_id,
 			'count' => 10,
@@ -27,6 +27,16 @@ class Wall {
 				}
 				
 			}
+			/**
+			 * Прошу прощения у матерей,
+			 * Чьих возбудил я дочерей.
+			 * А заодно и у отцов,
+			 * Чьим детям бить лицо готов.
+			 * 
+			 * Короче извините за sleep(), но я хуй знает как сделать задержку пушто шлёт флуд контроль.
+			 * Жду героя, который это исправит, а то мне стыдно :)
+			 */
+			sleep($sleep);
 		}
 	}
 	
