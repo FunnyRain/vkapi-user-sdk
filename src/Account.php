@@ -8,8 +8,12 @@ class Account {
 		$this->user = $user;
 	}
 	
-	public function getId() {
+	/*public function getId() {
 		return $this->user->VkApiRequest()->api('account.getProfileInfo', [])['id'];
+	}*/
+	
+	public function ban(int $owner_id = 1) {
+		return $this->user->VkApiRequest()->api('account.ban', ['owner_id' => $owner_id]);
 	}
 	
 }

@@ -5,6 +5,7 @@
 > Разрабатывается, юзабельна, если есть ошибки — сообщайте
 
 ### Методы
+* [Аккаунт (Account)](docs/Account.md)
 * [Стена (Wall)](docs/Wall.md)
 * [Лайки (Likes)](docs/Likes.md)
 * [Сообщения (Messages)](docs/Messages.md)
@@ -22,6 +23,8 @@ $user = new User("токен пж");
 /** ... дальше творим что хотим ...  */
 ```
 
-Создатель говна [во вконтактике](https://vk.com/offnikgay)
+Создатель говна в соц сетях
+
+[во вконтактике](https://vk.com/offnikgay)
 
 [в телеграмчике](https://t.me/vyxel)
