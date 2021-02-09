@@ -7,7 +7,7 @@ class Wall {
 	
 	public function __construct(User $user) {
 		$this->user = $user;
-		$this->cache = new Cache('temp_wallIDS.json');
+		$this->cache = new Cache('temp_wallIDS.json', 30);
 	}
 	
 	public function listen($owner_id, $call, int $sleep) {
@@ -21,7 +21,7 @@ class Wall {
 			
 			foreach ($items as $key => $item) {
 				
-				if (!in_array($item['id'], $this->cache->get())) {
+				if (!in_array($item['id'], $this->cache->get()['temp'])) {
 					$this->cache->set($item['id']);
 					$call($item);
 				}
