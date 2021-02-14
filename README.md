@@ -9,6 +9,10 @@
 * [Стена (Wall)](docs/Wall.md)
 * [Лайки (Likes)](docs/Likes.md)
 * [Сообщения (Messages)](docs/Messages.md)
+* [Апи (VkApiRequest)](docs/Api.md)
+
+### Примеры
+[Примеры аааааа ооооо](tests/)
 
 ### Начало
 Качаем библиотеку, сами разберётесь :)
