@@ -10,13 +10,12 @@
  */
 
 $user = new User("токен");
-	
-$user->getWall()->listen(-1 /** Айди группы */, function($data) use ($user) {
-	
+
+$user->getWall()->listen(-1 /** Айди группы */, function ($data) use ($user) {
+
 	$user->getLikes()->add(
 		$data['post_type'], /** Тип поста */
 		$data['owner_id'], /** Айди группы / страницы */
 		$data['id'] /** Айди поста */
 	);
-	
 }, 60 /** Время задержки в секундах */);

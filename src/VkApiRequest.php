@@ -5,7 +5,7 @@ class VkApiRequest {
     private $user;
 
     public function __construct(User $user) {
-    	$this->user = $user;
+        $this->user = $user;
     }
 
     public function call(string $url) {
@@ -15,7 +15,7 @@ class VkApiRequest {
         );
 
         if (isset($sendRequest['error'])) {
-        	echo ("*******\n#{$sendRequest['error']['error_code']}, {$sendRequest['error']['error_msg']}\n*******\n");
+            echo ("*******\n#{$sendRequest['error']['error_code']}, {$sendRequest['error']['error_msg']}\n*******\n");
         } else return (isset($sendRequest['response'])) ? $sendRequest['response'] : $sendRequest;
     }
 
