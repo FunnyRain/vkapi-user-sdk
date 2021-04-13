@@ -15,21 +15,41 @@ class Wall {
 	public function listen($owner_id, $call, int $sleep) {
 		while (true) {
 			if (time() >= $this->update_time) {
-				$data = $this->user->VkApiRequest()->api('wall.get', [
-					'owner_id' => $owner_id,
-					'count' => 5,
-					'filter' => 'owner'
-				]);
-				$items = $data['items'];
-				if (count($items) == 0) continue;
+				if (is_array($owner_id)) {
+					foreach ($owner_id as $ids) {
+						$data = $this->user->VkApiRequest()->api('wall.get', [
+							'owner_id' => $ids,
+							'count' => 5,
+							'filter' => 'owner'
+						]);
+						$items = $data['items'];
+						if (count($items) == 0) continue;
 
-				foreach ($items as $key => $item) {
-					if (!in_array($item['id'], $this->cache->get()['temp'])) {
-						$this->cache->set($item['id']);
-						$call($item);
+						foreach ($items as $key => $item) {
+							if (!in_array($item['id'], $this->cache->get()['temp'])) {
+								$this->cache->set($item['id']);
+								$call($item);
+							}
+						}
+						$this->update_time = strtotime("+ {$sleep} seconds");
 					}
+				} else {
+					$data = $this->user->VkApiRequest()->api('wall.get', [
+						'owner_id' => $owner_id,
+						'count' => 5,
+						'filter' => 'owner'
+					]);
+					$items = $data['items'];
+					if (count($items) == 0) continue;
+
+					foreach ($items as $key => $item) {
+						if (!in_array($item['id'], $this->cache->get()['temp'])) {
+							$this->cache->set($item['id']);
+							$call($item);
+						}
+					}
+					$this->update_time = strtotime("+ {$sleep} seconds");
 				}
-				$this->update_time = strtotime("+ {$sleep} seconds");
 			}
 		}
 		/**
