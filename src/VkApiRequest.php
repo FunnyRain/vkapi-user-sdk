@@ -4,12 +4,54 @@ class VkApiRequest {
 
     private $user;
 
+    public $key;
+    public $ts;
+    public $server;
+
+    public $vkdata;
+
+    const PEER_ID = 2000000000;
+
     public function __construct(User $user) {
         $this->user = $user;
     }
 
     public function setToken(string $token): void {
         $this->user->token = $token;
+    }
+
+    public function getLongPollServer(): array {
+        $data = $this->api("messages.getLongPollServer", ['lp_version' => 3]);
+        echo ("\nСсылка лонгпулла обновлена\n");
+        return list($this->key, $this->server, $this->ts) = [$data['key'], $data['server'], $data['ts']];
+    }
+
+    public function getRequest(): array {
+        $result = $this->getData();
+        if (isset($result["failed"])) {
+            if ($result["failed"] == 1) {
+                unset($this->ts);
+                $this->ts = $result["ts"];
+            } else {
+                $this->getLongPollServer();
+                $result = $this->getData();
+            }
+        }
+
+        $this->ts = $result["ts"];
+        return $result;
+    }
+
+    public function getData(): array {
+        $data = json_decode($this->curl_post('https://' . $this->server . '?' . http_build_query([
+            'act' => 'a_check',
+            'key' => $this->key,
+            'ts' => $this->ts,
+            'wait' => 25,
+            'mode' => 2,
+            'version' => 3
+        ])), 1);
+        return $data;
     }
 
     public function call(string $url) {
