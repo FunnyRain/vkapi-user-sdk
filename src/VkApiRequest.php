@@ -8,6 +8,10 @@ class VkApiRequest {
         $this->user = $user;
     }
 
+    public function setToken(string $token): void {
+        $this->user->token = $token;
+    }
+
     public function call(string $url) {
         $sendRequest = json_decode(
             (function_exists('curl_init')) ? self::curl_post($url) : file_get_contents($url),
