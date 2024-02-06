@@ -17,11 +17,15 @@ class Wall {
 			if (time() >= $this->update_time) {
 				if (is_array($owner_id)) {
 					foreach ($owner_id as $ids) {
+
+						if (is_numeric($ids)) {
+							$group_id = ['owner_id' => $ids];
+						} else $group_id = ['domain' => $ids];
+
 						$data = $this->user->VkApiRequest()->api('wall.get', [
-							'owner_id' => $ids,
 							'count' => 5,
 							'filter' => 'owner'
-						]);
+						] + $group_id);
 						$items = $data['items'];
 						if (count($items) == 0) continue;
 
